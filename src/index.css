@@ -1,0 +1,64 @@
+:root {
+  --bg-color: #ffffff;
+  --bg-soft: #f8fafc;
+  /* Slate 50 */
+  --text-color: #0f172a;
+  /* Slate 900 */
+  --text-soft: #64748b;
+  /* Slate 500 */
+  /* Premium Black (Apple-style) */
+  --primary: #1c1c1e;
+  --primary-dark: #000000;
+  --primary-light: #f2f2f7;
+  /* iOS System Gray 6 */
+
+  /* Very Subtle Success Muted Green */
+  --success: #34c759;
+  /* iOS System Green */
+  --success-dark: #248a3d;
+  --success-light: #e8f9ed;
+
+  --accent: #ff9500;
+  /* iOS System Orange */
+  /* Amber 500 */
+  --border-color: #e2e8f0;
+  /* Slate 200 */
+  --sidebar-width: 250px;
+  --accent-color: var(--primary);
+  --action-bg: #0f172a;
+  /* Slate 900 */
+  --action-hover: #1e293b;
+  /* Slate 800 */
+  --action-text: #ffffff;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ddd;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}

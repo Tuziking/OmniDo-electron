@@ -1,0 +1,345 @@
+.container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 130px);
+    width: 100%;
+}
+
+.heroSection {
+    text-align: center;
+    margin-bottom: 3.5rem;
+    margin-top: 1.5rem;
+}
+
+.greeting {
+    font-size: 1.1rem;
+    color: var(--text-soft);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.title {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-color);
+    letter-spacing: -0.04em;
+}
+
+.mainGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+    max-width: 1100px;
+    z-index: 1;
+}
+
+/* Standard OmniDo Card */
+.glassCard {
+    background: #ffffff;
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+}
+
+.timerSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.timerDisplay {
+    font-size: 7rem;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-color);
+    margin: 1.5rem 0;
+    line-height: 1;
+    letter-spacing: -0.05em;
+}
+
+.timerLabel {
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-soft);
+}
+
+.timerControls {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.controlBtn {
+    padding: 0.75rem 1.75rem;
+    border-radius: 12px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.95rem;
+}
+
+.primaryBtn {
+    background: var(--action-bg);
+    color: var(--action-text);
+}
+
+.secondaryBtn {
+    background: var(--bg-soft);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+.controlBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.controlBtn:active {
+    transform: scale(0.98);
+}
+
+.settingsSection {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.durationGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.durationInput {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: left;
+}
+
+.durationInput label {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    font-weight: 600;
+}
+
+.durationInput input {
+    padding: 0.5rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    outline: none;
+    font-size: 0.9rem;
+}
+
+.rightCol {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+}
+
+.statItem {
+    padding: 1.75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.statValue {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-color);
+    line-height: 1.1;
+}
+
+.statLabel {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+    font-weight: 500;
+    margin-top: 0.25rem;
+}
+
+.taskListSection {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+}
+
+.taskListHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.taskListHeader h3 {
+    font-size: 1.25rem;
+    color: var(--text-color);
+}
+
+.taskList {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    max-height: 380px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+/* Custom scrollbar */
+.taskList::-webkit-scrollbar {
+    width: 6px;
+}
+
+.taskList::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.taskList::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 10px;
+}
+
+.taskItem {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--bg-soft);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.textWrapper {
+    position: relative;
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.strikeLine {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 1.5px;
+    background-color: var(--text-soft);
+    transform-origin: left;
+    pointer-events: none;
+}
+
+.taskItem:hover {
+    background: white;
+    border-color: var(--text-color);
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
+}
+
+.taskItem:hover .deleteBtn {
+    opacity: 1;
+}
+
+.deleteBtn {
+    background: none;
+    border: none;
+    color: var(--text-soft);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.deleteBtn:hover {
+    color: #ef4444;
+    background: #fee2e2;
+}
+
+.addTaskWrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.addTaskInput {
+    width: 100%;
+    background: white;
+    border: 1px solid var(--border-color);
+    padding: 0.85rem 1rem 0.85rem 2.8rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    outline: none;
+    transition: all 0.2s;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.addTaskInput:focus {
+    border-color: var(--text-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.inputIcon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-soft);
+    pointer-events: none;
+}
+
+.quoteSection {
+    margin-top: 4rem;
+    text-align: center;
+    max-width: 650px;
+    color: var(--text-soft);
+    line-height: 1.6;
+    padding: 0 2rem;
+}
+
+.quoteText {
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--text-color);
+    font-style: italic;
+    margin: 0;
+}
+
+.quoteAuthor {
+    display: block;
+    margin-top: 0.75rem;
+    font-size: 0.95rem;
+    opacity: 0.75;
+}
+
+@media (max-width: 950px) {
+    .mainGrid {
+        grid-template-columns: 1fr;
+    }
+}

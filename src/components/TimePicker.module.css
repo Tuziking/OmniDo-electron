@@ -1,0 +1,31 @@
+.container {
+    display: flex;
+    align-items: center;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 4px 8px;
+    width: fit-content;
+}
+
+.select {
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    font-family: inherit;
+    cursor: pointer;
+    outline: none;
+    appearance: none;
+    padding: 2px;
+    text-align: center;
+}
+
+.select:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+}
+
+.separator {
+    margin: 0 4px;
+    font-weight: bold;
+}

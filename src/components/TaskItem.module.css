@@ -1,0 +1,147 @@
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px;
+    background: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 20px;
+    margin-bottom: 0;
+    /* Handled by container gap */
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+}
+
+.item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.06);
+    border-color: transparent;
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    flex: 1;
+}
+
+/* Custom Checkbox */
+.checkbox {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 28px;
+    height: 28px;
+    border: 2px solid #e5e7eb;
+    border-radius: 10px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+    background: white;
+}
+
+.checkbox:checked {
+    background-color: var(--success);
+    border-color: var(--success);
+}
+
+.checkbox:checked::after {
+    border-color: white;
+    /* Contrast on green background */
+}
+
+.checkbox:checked::after {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 10px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox:hover {
+    border-color: var(--primary);
+    transform: scale(1.1);
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1c1c1e;
+    line-height: 1.4;
+    transition: all 0.3s;
+}
+
+.deadline {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: #8e8e93;
+    background: #f2f2f7;
+    padding: 4px 10px;
+    border-radius: 8px;
+    width: fit-content;
+}
+
+.overdue {
+    color: #ff3b30;
+    /* iOS Red */
+    background: #fff1f0;
+}
+
+.completed {
+    background-color: #fcfcfc;
+    box-shadow: none;
+    border-color: #f3f4f6;
+}
+
+.completed .title {
+    color: var(--text-soft);
+    text-decoration: line-through;
+}
+
+.completed .checkbox {
+    border-color: #e5e7eb;
+    background-color: #f3f4f6;
+}
+
+.completed .checkbox:checked::after {
+    border-color: #d1d5db;
+}
+
+.deleteBtn {
+    background: #fee2e2;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+    opacity: 0;
+    transform: translateX(10px);
+}
+
+.item:hover .deleteBtn {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.deleteBtn:hover {
+    background-color: #fecaca;
+    transform: scale(1.1);
+}

@@ -1,0 +1,18 @@
+.container {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.content {
+    position: relative;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 130px 40px 40px 40px;
+    /* 110px (nav) + 20px (gap) */
+    /* Top padding for navbar */
+    width: 100%;
+    margin: 0 auto;
+}

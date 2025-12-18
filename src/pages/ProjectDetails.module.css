@@ -1,0 +1,116 @@
+.container {
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.backBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: none;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    color: var(--secondary-text);
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+}
+
+.backBtn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: var(--text-color);
+}
+
+.actions {
+    display: flex;
+    gap: 10px;
+}
+
+.actionBtn {
+    padding: 8px 16px;
+    border: 1px solid var(--border-color);
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.primaryBtn {
+    padding: 8px 16px;
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    font-size: 2.5rem;
+    margin: 0 0 10px 0;
+}
+
+.description {
+    color: var(--secondary-text);
+    max-width: 600px;
+    margin-bottom: 40px;
+}
+
+.kanbanBoard {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+    padding-bottom: 20px;
+    flex: 1;
+}
+
+.column {
+    min-width: 300px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 15px;
+}
+
+.column h3 {
+    margin: 0 0 15px 0;
+    font-size: 1rem;
+    color: var(--secondary-text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.taskCard {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    cursor: grab;
+}
+
+.taskCard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}

@@ -1,0 +1,188 @@
+.container {
+    padding: 40px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.header h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0;
+    color: var(--text-color);
+    letter-spacing: -0.02em;
+}
+
+.addBtn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--action-bg);
+    color: var(--action-text);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.addBtn:hover {
+    background-color: var(--action-hover);
+    transform: translateY(-1px);
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    max-width: 500px;
+    width: 100%;
+    animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-soft);
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    background-color: var(--bg-soft);
+    color: var(--text-color);
+}
+
+.modalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.modalInput {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+    box-sizing: border-box;
+}
+
+.modalInput:focus {
+    border-color: var(--primary);
+}
+
+.colorPicker {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.colorPicker span {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-soft);
+}
+
+.colors {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.colorBtn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.colorBtn:hover {
+    transform: scale(1.1);
+}
+
+.activeColor {
+    border-color: var(--text-color);
+    transform: scale(1.1);
+}
+
+.saveBtn {
+    background-color: var(--text-color);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+    margin-top: 8px;
+}
+
+.saveBtn:hover {
+    opacity: 0.9;
+}

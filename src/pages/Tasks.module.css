@@ -1,0 +1,236 @@
+.container {
+    padding: 40px;
+    max-width: 1200px;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    height: 100%;
+    overflow-y: auto;
+    /* Ensure it takes full width up to max-width */
+    /* Removed height: 100% to allow natural scrolling */
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+    /* Prevent padding from adding to width */
+}
+
+.header {
+    margin-bottom: 32px;
+}
+
+.headerTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+}
+
+.headerTitle h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+    color: var(--text-color);
+}
+
+.viewSwitcher {
+    display: flex;
+    background: var(--bg-soft);
+    padding: 4px;
+    border-radius: 14px;
+    gap: 4px;
+}
+
+.viewBtn {
+    padding: 8px;
+    border: none;
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.viewBtn:hover {
+    color: var(--text-color);
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.activeView {
+    background: white;
+    color: var(--primary);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.subtitle {
+    color: var(--text-soft);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.statsOverview {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 24px;
+}
+
+.statCard {
+    background: white;
+    padding: 20px;
+    border-radius: 20px;
+    border: 1px solid #e5e5ea;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+    transition: all 0.3s ease;
+}
+
+.statCard:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.08);
+    border-color: #d1d1d6;
+}
+
+.statHeader {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #8e8e93;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.statIcon {
+    color: #1c1c1e;
+}
+
+.statValue {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: #1c1c1e;
+}
+
+.addTaskBtn {
+    width: 100%;
+    margin-bottom: 32px;
+    padding: 16px;
+    background: white;
+    border: 2px dashed var(--border-color);
+    border-radius: 20px;
+    color: var(--text-soft);
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.addTaskBtn:hover {
+    border-color: var(--action-bg);
+    color: white;
+    background-color: var(--action-bg);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px -4px rgba(15, 23, 42, 0.2);
+}
+
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    /* Removed flex: 1 and overflow-y: auto to allow page scrolling */
+    padding-bottom: 40px;
+}
+
+.emptyState {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-soft);
+}
+
+.emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+/* Modal Styles */
+.modalOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(15, 23, 42, 0.5);
+    /* Slate 900 with opacity */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal {
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(15, 23, 42, 0.2);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.modalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalHeader h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+.closeBtn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-soft);
+    padding: 4px;
+    border-radius: 50%;
+    transition: all 0.2s;
+}
+
+.closeBtn:hover {
+    background-color: var(--bg-soft);
+    color: var(--text-color);
+}
+
+.modalInput {
+    width: 100%;
+    padding: 15px;
+    font-size: 1.2rem;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.modalInput:focus {
+    border-color: var(--primary);
+}
+
+.pickerContainer {
+    display: flex;
+    justify-content: center;
+}

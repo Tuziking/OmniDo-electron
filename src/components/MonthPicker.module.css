@@ -1,0 +1,32 @@
+.container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 6px 10px;
+    width: fit-content;
+}
+
+.btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+}
+
+.btn:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.label {
+    font-weight: 500;
+    min-width: 120px;
+    text-align: center;
+}

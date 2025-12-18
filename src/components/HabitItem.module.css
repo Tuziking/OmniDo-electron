@@ -1,0 +1,307 @@
+.itemWrapper {
+    background: white;
+    border-radius: 24px;
+    border: 1px solid var(--border-color);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.itemWrapper:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px -12px rgba(15, 23, 42, 0.12);
+    border-color: #cbd5e1;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    cursor: pointer;
+    flex: 1;
+    gap: 24px;
+}
+
+.cardTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.iconWrapper {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #f2f2f7 0%, #e5e5ea 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.itemWrapper:hover .iconWrapper {
+    transform: scale(1.1) rotate(5deg);
+}
+
+.icon {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--primary);
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.title {
+    margin: 0;
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #1c1c1e;
+    /* Absolute Pro Black */
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+}
+
+.status {
+    font-size: 0.7rem;
+    padding: 4px 12px;
+    border-radius: 20px;
+    background: #f2f2f7;
+    color: #8e8e93;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.statusDone {
+    background: var(--success-light);
+    color: var(--success-dark);
+}
+
+.stats {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.streak {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #8e8e93;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.fireIcon {
+    color: var(--accent);
+}
+
+.progressContainer {
+    width: 100%;
+}
+
+.progress {
+    width: 100%;
+    height: 8px;
+    background: #f2f2f7;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.progressBar {
+    height: 100%;
+    background: var(--success);
+    /* Solid Apple Green */
+    border-radius: 20px;
+}
+
+.actions {
+    position: absolute;
+    top: 32px;
+    right: 96px;
+    /* Space for check-in button */
+    display: flex;
+    gap: 6px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.itemWrapper:hover .actions {
+    opacity: 1;
+}
+
+.iconBtn {
+    background: white;
+    border: 1px solid var(--border-color);
+    color: var(--text-soft);
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconBtn:hover {
+    background: var(--bg-soft);
+    color: var(--text-color);
+}
+
+.menu {
+    position: absolute;
+    top: 48px;
+    right: 0;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    min-width: 160px;
+    z-index: 50;
+    animation: menuFadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes menuFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.menuItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all 0.2s;
+}
+
+.menuItem:hover {
+    background: var(--bg-soft);
+    color: var(--text-color);
+}
+
+.deleteItem {
+    color: #ef4444;
+}
+
+.deleteItem:hover {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.checkInBtn {
+    width: 54px;
+    height: 54px;
+    background: white;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    color: var(--text-soft);
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.btnContent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.checkInBtn:hover {
+    transform: scale(1.05);
+    background: #f2f2f7;
+}
+
+.checkInDone {
+    background: #e8f9ed;
+    /* Very Soft Success Green Background */
+    border: none;
+    color: var(--success);
+    /* Pure iOS Green Check */
+    box-shadow: 0 4px 10px rgba(52, 199, 89, 0.1);
+}
+
+.checkInDone:hover {
+    background: #d1f2d9;
+    color: var(--success-dark);
+}
+
+.heatmapSection {
+    padding: 16px 20px;
+    border-top: 1px solid var(--bg-soft);
+    background: #fcfcfd;
+}
+
+.heatmapGrid {
+    display: grid;
+    grid-template-rows: repeat(7, 1fr);
+    grid-auto-flow: column;
+    gap: 3px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.heatmapCell {
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--border-color);
+    transition: transform 0.2s ease;
+}
+
+.heatmapCell:hover {
+    transform: scale(1.2);
+    z-index: 1;
+}
+
+.level0 {
+    background: var(--border-color);
+}
+
+.level1 {
+    background: #d1fae5;
+}
+
+.level2 {
+    background: #6ee7b7;
+}
+
+.level3 {
+    background: #10b981;
+}
+
+.level4 {
+    background: #059669;
+}
