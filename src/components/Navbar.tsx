@@ -7,8 +7,6 @@ const Navbar: React.FC = () => {
     return (
         <header className={styles.navbar}>
             <div className={styles.logo}>
-                {/* Assuming logo.png is in public folder, same as Sidebar */}
-                <img src="./logo.png" alt="OmniDo" />
                 <span>OmniDo</span>
             </div>
             <nav className={styles.nav}>

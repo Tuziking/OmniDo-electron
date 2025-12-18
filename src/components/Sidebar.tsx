@@ -5,9 +5,8 @@ import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {
     return (
-        <div className={styles.sidebar}>
+        <div className={`${styles.sidebar} drag-region`}>
             <div className={styles.logo}>
-                <img src="./logo.png" alt="OmniDo" />
                 <span>OmniDo</span>
             </div>
             <nav className={styles.nav}>

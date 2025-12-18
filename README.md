@@ -19,6 +19,10 @@
     <img src="https://img.shields.io/github/license/Tuziking/OmniDo?style=flat-square&color=lightgrey" alt="License">
   </p>
 
+  <p>
+    <a href="README_EN.md">English</a> | <b>简体中文</b>
+  </p>
+
   <br>
   
   </div>
@@ -39,24 +43,65 @@ OmniDo 采用 **Apple 风格的单色美学 (Monochrome Aesthetic)**，致力于
 
 ### 💡 灵感看板 (Inspiration Moodboard)
 **不只是收集，更是视觉化的创意沉浸空间。**
+
+<table>
+  <tr>
+    <td width="60%"><img src="images/inspirations_preview.png" alt="Inspiration Dashboard"></td>
+    <td width="40%">
+      <img src="images/inspiration_markdown_preview.png" alt="Markdown Editor"><br>
+      <img src="images/inspiration_draw_preview.png" alt="Drawing Tool">
+    </td>
+  </tr>
+</table>
+
 * **智能封面提取**：自动识别 Markdown 文本中的图片并将其转化为瀑布流封面。
 * **影院级预览**：采用“毛玻璃背景 + 原始比例”展示，确保每一张灵感图都 100% 完整呈现。
 * **自由绘图**：深度集成 Excalidraw 手绘引擎，随时勾勒脑图与草图。
 
 ### 🌱 习惯仪式 (Habit Rituals)
 **建立可感知的自我提升路径。**
+
+<img src="images/habits_preview.png" alt="Habit Rituals" width="100%">
+
 * **可视化热力图**：通过明暗变化的网格，复盘你过去数月的坚持。
 * **数据仪表盘**：直观展示今日进度、连续打卡天数与目标达成度。
 * **极简打卡**：轻量化的半透明交互按钮，消除操作阻力。
 
 ### ✅ 任务执行 (Execution Center)
 **剔除干扰，直击核心目标。**
+
+<table>
+  <tr>
+    <td width="50%"><img src="images/tasks_preview.png" alt="Tasks Execution"></td>
+    <td width="50%">
+      <img src="images/tasks_timeline_preview.png" alt="Timeline View"><br>
+      <img src="images/tasks_calender_preview.png" alt="Calendar View">
+    </td>
+  </tr>
+</table>
+
 * **时间轴管理**：智能归类“今天”、“即将到来”与“已完成”，让日程一目了然。
 * **信息富媒体**：任务标题支持 Markdown 渲染，重要细节不再丢失。
 * **快速概览**：顶部统计看板实时反馈任务完成率与逾期压力。
 
+### 📂 项目追踪 (Project Tracking)
+**结构化管理复杂事务。**
+
+<table>
+  <tr>
+    <td width="50%"><img src="images/projects_preview.png" alt="Projects Overview"></td>
+    <td width="50%"><img src="images/project_details_preview.png" alt="Project Details"></td>
+  </tr>
+</table>
+
+* **看板管理**：直观的 Kanban 拖拽体验，掌控任务流动。
+* **多层级任务**：支持无限深度的子任务拆解。
+
 ### 🧘 深度专注 (Focus Presence)
 **回归纯粹的创作时刻。**
+
+<img src="images/focus_preview.png" alt="Focus Timer" width="100%">
+
 * **极简番茄钟**：动态流光倒计时，专注，从未如此优雅。
 * **核心任务置顶**：屏幕中心仅保留当前最重要的目标，物理隔离干扰。
 * **自定义配置**：自由设定工作与休息比例，完美适配你的节奏。

@@ -39,7 +39,24 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   -webkit-font-smoothing: antialiased;
+  /* Support rounded corners for frameless windows */
+  border-radius: 12px;
+  overflow: hidden;
+  height: 100vh;
 }
+
+/* Draggable Region Utility */
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+/* Prevent clicking issues on buttons inside draggable regions */
+.drag-region button,
+.drag-region a,
+.drag-region input {
+  -webkit-app-region: no-drag;
+}
+
 
 * {
   box-sizing: border-box;

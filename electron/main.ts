@@ -30,7 +30,14 @@ function createWindow() {
     width: 1200,
     height: 800,
     title: 'OmniDo',
-    titleBarStyle: process.platform === 'darwin' ? 'hiddenInset' : 'default',
+    titleBarStyle: 'hidden',
+    ...(process.platform === 'win32' ? {
+      titleBarOverlay: {
+        color: '#ffffff',
+        symbolColor: '#1c1c1e',
+        height: 32
+      }
+    } : {}),
     icon: path.join(process.env.VITE_PUBLIC, 'logo.png'),
     webPreferences: {
       preload: path.join(__dirname, 'preload.mjs'),

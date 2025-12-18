@@ -114,23 +114,21 @@ const Inspiration: React.FC = () => {
                                     style={{ backgroundColor: item.color || '#fff' }}
                                     onClick={() => handleEdit(item)}
                                 >
-                                    {/* Cover Image */}
-                                    {item.coverImage && (
+                                    {/* Primary Visual Header (Cover or Image Content) */}
+                                    {item.coverImage ? (
                                         <div className={styles.coverImage}>
                                             <img src={item.coverImage} alt={item.title} />
                                         </div>
-                                    )}
-
-                                    {item.type === 'image' && (
-                                        <img src={item.content} alt={item.title} className={styles.image} />
-                                    )}
-
-                                    {item.type === 'drawing' && (
+                                    ) : item.type === 'image' && item.content && !item.content.trim().startsWith('![') && !item.content.trim().startsWith('<img') ? (
+                                        <div className={styles.coverImage}>
+                                            <img src={item.content} alt={item.title} />
+                                        </div>
+                                    ) : item.type === 'drawing' ? (
                                         <div style={{ padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center', opacity: 0.5 }}>
                                             <PenTool size={32} />
                                             <span style={{ marginTop: '0.5rem', fontSize: '0.9rem' }}>Drawing</span>
                                         </div>
-                                    )}
+                                    ) : null}
 
                                     <h3>{item.title}</h3>
 

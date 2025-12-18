@@ -92,6 +92,9 @@ const InspirationEditor: React.FC = () => {
             const match = content.match(mdImageRegex) || content.match(htmlImageRegex);
             if (match && match[1]) {
                 finalCoverImage = match[1];
+            } else if (content.trim().startsWith('http') && !content.trim().includes('\n')) {
+                // Fallback for raw URL in content
+                finalCoverImage = content.trim();
             }
         }
 
@@ -177,6 +180,7 @@ const InspirationEditor: React.FC = () => {
                         onChange={e => setType(e.target.value as InspirationType)}
                     >
                         <option value="text">Markdown</option>
+                        <option value="image">Image URL</option>
                         <option value="drawing">Drawing</option>
                         <option value="quote">Quote</option>
                     </select>
