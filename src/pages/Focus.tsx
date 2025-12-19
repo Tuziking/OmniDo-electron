@@ -2,29 +2,25 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, RotateCcw, CheckCircle2, Flame, Trash2, Plus, Settings, ClipboardCheck } from 'lucide-react';
 import styles from './Focus.module.css';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useStorage } from '../hooks/useStorage';
 import EmptyState from '../components/EmptyState';
 
-interface Task {
-    id: number;
-    text: string;
-    completed: boolean;
-}
+import { Task } from '../types/task';
 
 type TimerMode = 'focus' | 'shortBreak' | 'longBreak';
 
 const DEFAULT_TASKS: Task[] = [
-    { id: 1, text: 'Complete project proposal', completed: false },
-    { id: 2, text: 'Review design mockups', completed: false },
-    { id: 3, text: 'Morning standup', completed: true },
+    { id: '1', title: 'Complete project proposal', completed: false },
+    { id: '2', title: 'Review design mockups', completed: false },
+    { id: '3', title: 'Morning standup', completed: true },
 ];
 
 
 
 const Focus: React.FC = () => {
     // Timer Settings
-    const [focusDuration, setFocusDuration] = useLocalStorage<number>('omnido_focus_duration', 25);
-    const [breakDuration, setBreakDuration] = useLocalStorage<number>('omnido_break_duration', 5);
+    const [focusDuration, setFocusDuration] = useStorage<number>('omnido_focus_duration', 25);
+    const [breakDuration, setBreakDuration] = useStorage<number>('omnido_break_duration', 5);
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
     // Timer State
@@ -33,8 +29,8 @@ const Focus: React.FC = () => {
     const [isActive, setIsActive] = useState(false);
 
     // Persisted UI State
-    const [tasks, setTasks] = useLocalStorage<Task[]>('omnido_focus_tasks', DEFAULT_TASKS);
-    const [focusStreak, setFocusStreak] = useLocalStorage<number>('omnido_focus_streak', 2);
+    const [tasks, setTasks] = useStorage<Task[]>('omnido_focus_tasks', DEFAULT_TASKS);
+    const [focusStreak] = useStorage<number>('omnido_focus_streak', 2);
 
     // Timer Logic
     useEffect(() => {
@@ -85,19 +81,19 @@ const Focus: React.FC = () => {
             const input = e.target as HTMLInputElement;
             const text = input.value.trim();
             if (text) {
-                setTasks(prev => [{ id: Date.now(), text, completed: false }, ...prev]);
+                setTasks(prev => [{ id: Date.now().toString(), title: text, completed: false }, ...prev]);
                 input.value = '';
             }
         }
     };
 
-    const toggleTask = (id: number) => {
+    const toggleTask = (id: string) => {
         setTasks(prev => prev.map(t =>
             t.id === id ? { ...t, completed: !t.completed } : t
         ));
     };
 
-    const deleteTask = (id: number) => {
+    const deleteTask = (id: string) => {
         setTasks(prev => prev.filter(t => t.id !== id));
     };
 
@@ -272,7 +268,7 @@ const Focus: React.FC = () => {
                                                     color: task.completed ? 'var(--text-soft)' : 'var(--text-color)',
                                                     transition: 'color 0.3s ease'
                                                 }}>
-                                                    {task.text}
+                                                    {task.title}
                                                 </span>
                                                 <motion.div
                                                     className={styles.strikeLine}

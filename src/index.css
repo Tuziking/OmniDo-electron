@@ -30,6 +30,7 @@
   --action-hover: #1e293b;
   /* Slate 800 */
   --action-text: #ffffff;
+  --secondary-text: var(--text-soft);
 }
 
 body {
@@ -44,6 +45,7 @@ body {
   overflow: hidden;
   height: 100vh;
 }
+
 
 /* Draggable Region Utility */
 .drag-region {

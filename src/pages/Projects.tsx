@@ -6,7 +6,7 @@ import ConfirmModal from '../components/ConfirmModal';
 import { Plus, X, FolderPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Projects.module.css';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useStorage } from '../hooks/useStorage';
 
 interface Project {
     id: string;
@@ -24,7 +24,7 @@ const DEFAULT_PROJECTS: Project[] = [
 
 const Projects: React.FC = () => {
     const navigate = useNavigate();
-    const [projects, setProjects] = useLocalStorage<Project[]>('omnido_projects', DEFAULT_PROJECTS);
+    const [projects, setProjects] = useStorage<Project[]>('omnido_projects', DEFAULT_PROJECTS);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingProject, setEditingProject] = useState<Project | null>(null);

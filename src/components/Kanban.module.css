@@ -330,3 +330,88 @@
 .deleteBtn:hover {
     background: #fecaca;
 }
+
+.propertiesGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.propertyGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prioritySelector {
+    display: flex;
+    gap: 8px;
+}
+
+.priorityBtn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #4b5563;
+    transition: all 0.2s;
+}
+
+.priorityBtn:hover {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.priority1 {
+    background: #ecfdf5;
+    color: #059669;
+    border-color: #10b981;
+}
+
+.priority2 {
+    background: #fffbeb;
+    color: #d97706;
+    border-color: #f59e0b;
+}
+
+.priority3 {
+    background: #fef2f2;
+    color: #dc2626;
+    border-color: #ef4444;
+}
+
+.dateBtn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    border: 1px solid #e5e7eb;
+    background: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #374151;
+    width: 100%;
+    transition: all 0.2s;
+}
+
+.dateBtn:hover {
+    border-color: #d1d5db;
+    background: #f9fafb;
+}
+
+.datePickerContainer {
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: visible;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}

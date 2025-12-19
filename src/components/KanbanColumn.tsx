@@ -5,19 +5,14 @@ import { Plus } from 'lucide-react';
 import KanbanCard from './KanbanCard';
 import styles from './Kanban.module.css';
 
-interface Task {
-    id: string;
-    title: string;
-    status: 'todo' | 'in-progress' | 'done';
-    subtasks: Task[];
-}
+import { Task, TaskStatus } from '../types/task';
 
 interface KanbanColumnProps {
     id: string;
     title: string;
     tasks: Task[];
     onTaskClick: (task: Task) => void;
-    onAddTask: (status: 'todo' | 'in-progress' | 'done') => void;
+    onAddTask: (status: TaskStatus) => void;
 }
 
 const COLORS = {
@@ -74,7 +69,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ id, title, tasks, onTaskCli
 
             <button
                 className={styles.addBtn}
-                onClick={() => onAddTask(id as 'todo' | 'in-progress' | 'done')}
+                onClick={() => onAddTask(id as TaskStatus)}
             >
                 <Plus size={16} />
                 Add Task

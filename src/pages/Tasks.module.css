@@ -234,3 +234,56 @@
     display: flex;
     justify-content: center;
 }
+
+.prioritySelector {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 8px 0;
+}
+
+.priorityLabel {
+    font-weight: 700;
+    color: var(--text-soft);
+    font-size: 0.9rem;
+}
+
+.priorityOptions {
+    display: flex;
+    gap: 12px;
+}
+
+.priorityBtn {
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    background: white;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-soft);
+}
+
+.priorityBtn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.priorityActive1 {
+    background: #f0f7ff;
+    color: #007aff;
+    border-color: #007aff;
+}
+
+.priorityActive2 {
+    background: #fffbe6;
+    color: #faad14;
+    border-color: #faad14;
+}
+
+.priorityActive3 {
+    background: #fff1f0;
+    color: #ff3b30;
+    border-color: #ff3b30;
+}

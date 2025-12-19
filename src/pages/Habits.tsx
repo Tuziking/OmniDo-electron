@@ -7,7 +7,7 @@ import EmptyState from '../components/EmptyState';
 import ConfirmModal from '../components/ConfirmModal';
 import styles from './Habits.module.css';
 import { formatLocalDate } from '../utils/dateUtils';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useStorage } from '../hooks/useStorage';
 
 interface Habit {
     id: string;
@@ -51,7 +51,7 @@ const DEFAULT_HABITS: Habit[] = [
 
 const Habits: React.FC = () => {
     const navigate = useNavigate();
-    const [habits, setHabits] = useLocalStorage<Habit[]>('omnido_habits', DEFAULT_HABITS);
+    const [habits, setHabits] = useStorage<Habit[]>('omnido_habits', DEFAULT_HABITS);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [editingHabit, setEditingHabit] = useState<Habit | null>(null);

@@ -1,4 +1,5 @@
-import { app, BrowserWindow, Tray, Menu, nativeImage } from 'electron'
+import { app, BrowserWindow, Tray, Menu, nativeImage, ipcMain } from 'electron'
+import Store from 'electron-store'
 import { fileURLToPath } from 'node:url'
 import path from 'node:path'
 
@@ -24,6 +25,20 @@ process.env.VITE_PUBLIC = VITE_DEV_SERVER_URL ? path.join(process.env.APP_ROOT, 
 
 let win: BrowserWindow | null
 let tray: Tray | null
+
+const store = new Store()
+
+ipcMain.on('electron-store-get', async (event, val) => {
+  event.returnValue = store.get(val)
+})
+
+ipcMain.on('electron-store-set', async (_event, key, val) => {
+  store.set(key, val)
+})
+
+ipcMain.on('electron-store-delete', async (_event, key) => {
+  store.delete(key)
+})
 
 function createWindow() {
   win = new BrowserWindow({

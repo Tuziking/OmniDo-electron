@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useStorage } from '../hooks/useStorage';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { DndContext, DragOverlay, DragEndEvent, DragOverEvent, useSensor, useSensors, PointerSensor, closestCorners } from '@dnd-kit/core';
@@ -9,12 +10,7 @@ import TaskDetailModal from '../components/TaskDetailModal';
 import styles from './ProjectDetails.module.css';
 import kanbanStyles from '../components/Kanban.module.css';
 
-interface Task {
-    id: string;
-    title: string;
-    status: 'todo' | 'in-progress' | 'done';
-    subtasks: Task[];
-}
+import { Task, TaskStatus } from '../types/task';
 
 const ProjectDetails: React.FC = () => {
     const { id } = useParams();
@@ -29,11 +25,11 @@ const ProjectDetails: React.FC = () => {
     ];
     const project = projects.find(p => p.id === id) || { title: 'Project Details' };
 
-    const [tasks, setTasks] = useState<Task[]>([
-        { id: '1', title: 'Research competitors', status: 'todo', subtasks: [] },
-        { id: '2', title: 'Draft initial sketch', status: 'todo', subtasks: [] },
-        { id: '3', title: 'Design high-fidelity mockups', status: 'in-progress', subtasks: [] },
-        { id: '4', title: 'Project kickoff', status: 'done', subtasks: [] },
+    const [tasks, setTasks] = useStorage<Task[]>(`omnido_project_tasks_${id || 'default'}`, [
+        { id: '1', title: 'Research competitors', status: 'todo', completed: false, subtasks: [] },
+        { id: '2', title: 'Draft initial sketch', status: 'todo', completed: false, subtasks: [] },
+        { id: '3', title: 'Design high-fidelity mockups', status: 'in-progress', completed: false, subtasks: [] },
+        { id: '4', title: 'Project kickoff', status: 'done', completed: true, subtasks: [] },
     ]);
 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
@@ -74,7 +70,11 @@ const ProjectDetails: React.FC = () => {
                     if (activeIndex === -1) return tasks;
 
                     const newTasks = [...tasks];
-                    newTasks[activeIndex] = { ...newTasks[activeIndex], status: overColumnId };
+                    newTasks[activeIndex] = {
+                        ...newTasks[activeIndex],
+                        status: overColumnId,
+                        completed: overColumnId === 'done'
+                    };
                     return newTasks;
                 });
             }
@@ -91,7 +91,11 @@ const ProjectDetails: React.FC = () => {
 
                 const newTasks = [...tasks];
                 // Change status first
-                newTasks[activeIndex] = { ...newTasks[activeIndex], status: isOverTask.status };
+                newTasks[activeIndex] = {
+                    ...newTasks[activeIndex],
+                    status: isOverTask.status,
+                    completed: isOverTask.status === 'done'
+                };
 
                 // Then move to new position
                 return arrayMove(newTasks, activeIndex, overIndex);
@@ -133,11 +137,12 @@ const ProjectDetails: React.FC = () => {
         });
     };
 
-    const handleAddTask = (status: 'todo' | 'in-progress' | 'done') => {
+    const handleAddTask = (status: TaskStatus) => {
         const newTask: Task = {
             id: Date.now().toString(),
             title: 'New Task',
             status,
+            completed: status === 'done',
             subtasks: []
         };
         setTasks([...tasks, newTask]);

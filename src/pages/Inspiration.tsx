@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import EmptyState from '../components/EmptyState';
 import ConfirmModal from '../components/ConfirmModal';
 import styles from './Inspiration.module.css';
-import { useLocalStorage } from '../hooks/useLocalStorage';
+import { useStorage } from '../hooks/useStorage';
 
 // Updated types
 export type InspirationType = 'text' | 'image' | 'quote' | 'drawing';
@@ -48,7 +48,7 @@ const DEFAULT_ITEMS: InspirationItem[] = [
 const Inspiration: React.FC = () => {
     const navigate = useNavigate();
     // State
-    const [items, setItems] = useLocalStorage<InspirationItem[]>('omnido_inspiration', DEFAULT_ITEMS);
+    const [items, setItems] = useStorage<InspirationItem[]>('omnido_inspiration', DEFAULT_ITEMS);
 
     // Delete Confirmation State
     const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);

@@ -3,12 +3,7 @@ import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, isSameMonth, 
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import styles from './CalendarView.module.css';
 
-interface Task {
-    id: string;
-    title: string;
-    date?: Date;
-    completed: boolean;
-}
+import { Task } from '../types/task';
 
 interface CalendarViewProps {
     tasks: Task[];
@@ -38,7 +33,7 @@ const CalendarView: React.FC<CalendarViewProps> = ({ tasks, currentDate, onDateC
 
             const dayTasks = tasks.filter(task =>
                 task.date &&
-                isSameDay(task.date, cloneDay) &&
+                isSameDay(new Date(task.date), cloneDay) &&
                 !task.completed
             );
 

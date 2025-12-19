@@ -1,21 +1,14 @@
 import React, { useState } from 'react';
 import TaskItem from '../components/TaskItem';
+import TaskDetailModal from '../components/TaskDetailModal';
 import CalendarView from '../components/CalendarView';
 import TimelineView from '../components/TimelineView';
 import DateTimePicker from '../components/DateTimePicker';
 import { Plus, List, Calendar, Clock, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Tasks.module.css';
-import { useLocalStorage } from '../hooks/useLocalStorage';
-
-interface Task {
-    id: string;
-    title: string;
-    completed: boolean;
-    date?: Date;
-    startTime?: string;
-    duration?: number;
-}
+import { useStorage } from '../hooks/useStorage';
+import { Task, TaskPriority } from '../types/task';
 
 const DEFAULT_TASKS: Task[] = [
     {
@@ -47,14 +40,21 @@ const DEFAULT_TASKS: Task[] = [
 const Tasks: React.FC = () => {
     const [view, setView] = useState<'list' | 'calendar' | 'timeline'>('list');
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [tasks, setTasks] = useLocalStorage<Task[]>('omnido_tasks', DEFAULT_TASKS);
+    const [tasks, setTasks] = useStorage<Task[]>('omnido_tasks', DEFAULT_TASKS);
 
     const [showAddModal, setShowAddModal] = useState(false);
     const [newTaskTitle, setNewTaskTitle] = useState('');
     const [newTaskDate, setNewTaskDate] = useState<Date>(new Date());
+    const [newTaskPriority, setNewTaskPriority] = useState<TaskPriority>(1);
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
     const handleToggle = (id: string) => {
         setTasks(tasks.map(t => t.id === id ? { ...t, completed: !t.completed } : t));
+    };
+
+    const handleUpdateTask = (updatedTask: Task) => {
+        setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
+        setSelectedTask(updatedTask);
     };
 
     const handleDelete = (id: string) => {
@@ -73,11 +73,13 @@ const Tasks: React.FC = () => {
             completed: false,
             date: selectedDate,
             startTime: `${hours}:${minutes}`,
-            duration: 60 // Default duration
+            duration: 60, // Default duration
+            priority: newTaskPriority
         };
 
         setTasks([newTask, ...tasks]);
         setNewTaskTitle('');
+        setNewTaskPriority(1);
         setShowAddModal(false);
     };
 
@@ -165,10 +167,34 @@ const Tasks: React.FC = () => {
 
                     <div className={styles.list}>
                         {(() => {
+                            const sortTasks = (taskList: Task[]) => {
+                                return [...taskList].sort((a, b) => {
+                                    // 1. Deadline (soonest first)
+                                    if (a.date && b.date) {
+                                        const dateCompare = new Date(a.date).getTime() - new Date(b.date).getTime();
+                                        if (dateCompare !== 0) return dateCompare;
+                                    } else if (a.date) {
+                                        return -1;
+                                    } else if (b.date) {
+                                        return 1;
+                                    }
+
+                                    // 2. Priority (highest first)
+                                    const priorityA = a.priority || 1;
+                                    const priorityB = b.priority || 1;
+                                    if (priorityA !== priorityB) {
+                                        return priorityB - priorityA;
+                                    }
+
+                                    // 3. Creation time (newest first)
+                                    return Number(b.id) - Number(a.id);
+                                });
+                            };
+
                             const todayStr = new Date().toDateString();
-                            const todayTasks = tasks.filter(t => !t.completed && t.date && new Date(t.date).toDateString() === todayStr);
-                            const upcomingTasks = tasks.filter(t => !t.completed && (!t.date || new Date(t.date).toDateString() !== todayStr));
-                            const completedTasks = tasks.filter(t => t.completed);
+                            const todayTasks = sortTasks(tasks.filter(t => !t.completed && t.date && new Date(t.date).toDateString() === todayStr));
+                            const upcomingTasks = sortTasks(tasks.filter(t => !t.completed && (!t.date || new Date(t.date).toDateString() !== todayStr)));
+                            const completedTasks = sortTasks(tasks.filter(t => t.completed));
 
                             return (
                                 <>
@@ -182,6 +208,8 @@ const Tasks: React.FC = () => {
                                                         task={task}
                                                         onToggle={handleToggle}
                                                         onDelete={handleDelete}
+                                                        onClick={(task) => setSelectedTask(task)}
+                                                        onUpdate={handleUpdateTask}
                                                     />
                                                 ))}
                                             </AnimatePresence>
@@ -198,6 +226,8 @@ const Tasks: React.FC = () => {
                                                         task={task}
                                                         onToggle={handleToggle}
                                                         onDelete={handleDelete}
+                                                        onClick={(task) => setSelectedTask(task)}
+                                                        onUpdate={handleUpdateTask}
                                                     />
                                                 ))}
                                             </AnimatePresence>
@@ -214,6 +244,8 @@ const Tasks: React.FC = () => {
                                                         task={task}
                                                         onToggle={handleToggle}
                                                         onDelete={handleDelete}
+                                                        onClick={(task) => setSelectedTask(task)}
+                                                        onUpdate={handleUpdateTask}
                                                     />
                                                 ))}
                                             </AnimatePresence>
@@ -292,6 +324,20 @@ const Tasks: React.FC = () => {
                                 className={styles.modalInput}
                                 autoFocus
                             />
+                            <div className={styles.prioritySelector}>
+                                <span className={styles.priorityLabel}>Priority:</span>
+                                <div className={styles.priorityOptions}>
+                                    {([1, 2, 3] as TaskPriority[]).map((p) => (
+                                        <button
+                                            key={p}
+                                            className={`${styles.priorityBtn} ${newTaskPriority === p ? styles[`priorityActive${p}`] : ''}`}
+                                            onClick={() => setNewTaskPriority(p)}
+                                        >
+                                            {p === 1 ? 'Low' : p === 2 ? 'Medium' : 'High'}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
                             <div className={styles.pickerContainer}>
                                 <DateTimePicker
                                     key={newTaskDate.getTime()}
@@ -304,6 +350,18 @@ const Tasks: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+
+            {selectedTask && (
+                <TaskDetailModal
+                    task={selectedTask}
+                    onClose={() => setSelectedTask(null)}
+                    onUpdate={handleUpdateTask}
+                    onDelete={(id) => {
+                        handleDelete(id);
+                        setSelectedTask(null);
+                    }}
+                />
+            )}
         </div>
     );
 };

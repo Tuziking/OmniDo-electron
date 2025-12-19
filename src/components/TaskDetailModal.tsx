@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { X, Plus, Trash2, CheckSquare, Square } from 'lucide-react';
+import { X, Plus, Trash2, CheckSquare, Square, Calendar, AlertCircle } from 'lucide-react';
+import { format } from 'date-fns';
+import DateTimePicker from './DateTimePicker';
 import styles from './Kanban.module.css';
 
-interface Task {
-    id: string;
-    title: string;
-    status: 'todo' | 'in-progress' | 'done';
-    subtasks: Task[];
-}
+import { Task, TaskPriority } from '../types/task';
 
 interface TaskDetailModalProps {
     task: Task;
@@ -55,6 +52,7 @@ const SubtaskList: React.FC<SubtaskListProps> = ({ tasks, onUpdateSubtask, onDel
 
 const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpdate, onDelete }) => {
     const [title, setTitle] = useState(task.title);
+    const [showDatePicker, setShowDatePicker] = useState(false);
 
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTitle(e.target.value);
@@ -66,25 +64,26 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpda
             id: Date.now().toString(),
             title: '',
             status: 'todo',
+            completed: false,
             subtasks: []
         };
         onUpdate({
             ...task,
-            subtasks: [...task.subtasks, newSubtask]
+            subtasks: [...(task.subtasks || []), newSubtask]
         });
     };
 
     const handleUpdateSubtask = (subtaskId: string, updates: Partial<Task>) => {
         onUpdate({
             ...task,
-            subtasks: task.subtasks.map(t => t.id === subtaskId ? { ...t, ...updates } : t)
+            subtasks: (task.subtasks || []).map(t => t.id === subtaskId ? { ...t, ...updates } : t)
         });
     };
 
     const handleDeleteSubtask = (subtaskId: string) => {
         onUpdate({
             ...task,
-            subtasks: task.subtasks.filter(t => t.id !== subtaskId)
+            subtasks: (task.subtasks || []).filter(t => t.id !== subtaskId)
         });
     };
 
@@ -103,10 +102,56 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpda
                 </div>
 
                 <div className={styles.modalContent}>
+                    <div className={styles.propertiesGrid}>
+                        <div className={styles.propertyGroup}>
+                            <div className={styles.sectionTitle}>Priority</div>
+                            <div className={styles.prioritySelector}>
+                                {([1, 2, 3] as TaskPriority[]).map(p => (
+                                    <button
+                                        key={p}
+                                        className={`${styles.priorityBtn} ${task.priority === p ? styles[`priority${p}`] : ''}`}
+                                        onClick={() => onUpdate({ ...task, priority: p })}
+                                    >
+                                        <AlertCircle size={14} />
+                                        {p === 1 ? 'Low' : p === 2 ? 'Medium' : 'High'}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className={styles.propertyGroup}>
+                            <div className={styles.sectionTitle}>Due Date</div>
+                            <button
+                                className={styles.dateBtn}
+                                onClick={() => setShowDatePicker(true)}
+                            >
+                                <Calendar size={16} />
+                                <span>
+                                    {task.date
+                                        ? format(new Date(task.date), 'MMM d, yyyy HH:mm')
+                                        : 'Set due date'}
+                                </span>
+                            </button>
+                        </div>
+                    </div>
+
+                    {showDatePicker && (
+                        <div className={styles.datePickerContainer}>
+                            <DateTimePicker
+                                initialDate={task.date ? new Date(task.date) : new Date()}
+                                onSave={(date) => {
+                                    onUpdate({ ...task, date: date });
+                                    setShowDatePicker(false);
+                                }}
+                                onCancel={() => setShowDatePicker(false)}
+                            />
+                        </div>
+                    )}
+
                     <div className={styles.section}>
                         <div className={styles.sectionTitle}>Subtasks</div>
                         <SubtaskList
-                            tasks={task.subtasks}
+                            tasks={task.subtasks || []}
                             onUpdateSubtask={handleUpdateSubtask}
                             onDeleteSubtask={handleDeleteSubtask}
                         />
@@ -115,7 +160,6 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpda
                         </button>
                     </div>
 
-                    <div style={{ flex: 1 }}></div>
 
                     <button
                         className={styles.deleteBtn}

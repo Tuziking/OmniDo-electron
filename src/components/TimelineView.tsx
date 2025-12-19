@@ -3,15 +3,7 @@ import { format, addDays, startOfDay, isSameDay, eachDayOfInterval, isToday, isP
 import { Plus, Clock, Trash2, CheckCircle, Circle, Eye, EyeOff } from 'lucide-react';
 import styles from './TimelineView.module.css';
 
-interface Task {
-    id: string;
-    title: string;
-    startTime?: string;
-    duration?: number;
-    color?: string;
-    date?: Date;
-    completed: boolean;
-}
+import { Task } from '../types/task';
 
 interface TimelineViewProps {
     tasks: Task[];
@@ -39,7 +31,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
         endDate,
         sampleTaskDate: tasks[0]?.date,
         tasksWithDates: tasks.filter(t => t.date).length,
-        tasksInWindow: tasks.filter(t => t.date && t.date >= startDate && t.date <= endDate).length
+        tasksInWindow: tasks.filter(t => t.date && new Date(t.date) >= startDate && new Date(t.date) <= endDate).length
     });
 
     return (
@@ -64,7 +56,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
             <div className={styles.timelineTrack}>
                 {days.map((day) => {
                     const dayTasks = tasks
-                        .filter(t => t.date && isSameDay(t.date, day))
+                        .filter(t => t.date && isSameDay(new Date(t.date), day))
                         .sort((a, b) => {
                             // Sort by completion status first (uncompleted first)
                             if (a.completed !== b.completed) return a.completed ? 1 : -1;
@@ -112,10 +104,10 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
 
                                                     <div className={styles.taskMeta}>
                                                         {task.date && (
-                                                            <span className={`${styles.taskDDL} ${isPast(task.date) && !task.completed ? styles.overdue : ''}`}>
+                                                            <span className={`${styles.taskDDL} ${isPast(new Date(task.date)) && !task.completed ? styles.overdue : ''}`}>
                                                                 <Clock size={14} />
-                                                                {isPast(task.date) && !task.completed ? 'Overdue by ' : 'Due in '}
-                                                                {formatDistanceToNowStrict(task.date)}
+                                                                {isPast(new Date(task.date)) && !task.completed ? 'Overdue by ' : 'Due in '}
+                                                                {formatDistanceToNowStrict(new Date(task.date))}
                                                             </span>
                                                         )}
                                                     </div>

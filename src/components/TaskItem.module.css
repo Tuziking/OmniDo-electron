@@ -1,13 +1,10 @@
 .item {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 24px;
+    flex-direction: column;
+    padding: 20px;
     background: white;
     border: 1px solid #f3f4f6;
     border-radius: 20px;
-    margin-bottom: 0;
-    /* Handled by container gap */
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
     position: relative;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
@@ -19,21 +16,23 @@
     border-color: transparent;
 }
 
+.mainContent {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
 .left {
     display: flex;
     align-items: center;
-    gap: 24px;
+    gap: 20px;
     flex: 1;
 }
 
-/* Custom Checkbox */
 .checkbox {
     appearance: none;
     -webkit-appearance: none;
-    width: 28px;
-    height: 28px;
-    border: 2px solid #e5e7eb;
-    border-radius: 10px;
     width: 24px;
     height: 24px;
     border: 2px solid var(--border-color);
@@ -47,11 +46,6 @@
 .checkbox:checked {
     background-color: var(--success);
     border-color: var(--success);
-}
-
-.checkbox:checked::after {
-    border-color: white;
-    /* Contrast on green background */
 }
 
 .checkbox:checked::after {
@@ -74,7 +68,13 @@
 .content {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
+}
+
+.titleRow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .title {
@@ -82,46 +82,80 @@
     font-weight: 700;
     color: #1c1c1e;
     line-height: 1.4;
-    transition: all 0.3s;
+}
+
+.meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.priorityTag {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 0.65rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.high {
+    background: #fff1f0;
+    color: #ff3b30;
+    border: 1px solid rgba(255, 59, 48, 0.1);
+}
+
+.medium {
+    background: #fffbe6;
+    color: #faad14;
+    border: 1px solid rgba(250, 173, 20, 0.1);
 }
 
 .deadline {
     display: flex;
     align-items: center;
     gap: 6px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     font-weight: 700;
     color: #8e8e93;
     background: #f2f2f7;
-    padding: 4px 10px;
-    border-radius: 8px;
+    padding: 3px 8px;
+    border-radius: 6px;
     width: fit-content;
 }
 
 .overdue {
     color: #ff3b30;
-    /* iOS Red */
     background: #fff1f0;
 }
 
-.completed {
-    background-color: #fcfcfc;
-    box-shadow: none;
-    border-color: #f3f4f6;
-}
-
-.completed .title {
+.subtaskSummary {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
     color: var(--text-soft);
-    text-decoration: line-through;
+    cursor: pointer;
+    background: var(--bg-soft);
+    padding: 2px 8px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    font-weight: 700;
+    border: 1px solid var(--border-color);
 }
 
-.completed .checkbox {
-    border-color: #e5e7eb;
-    background-color: #f3f4f6;
+.subtaskSummary:hover {
+    background: var(--border-color);
+    color: var(--primary);
 }
 
-.completed .checkbox:checked::after {
-    border-color: #d1d5db;
+.right {
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
 }
 
 .deleteBtn {
@@ -129,8 +163,8 @@
     border: none;
     color: #ef4444;
     cursor: pointer;
-    padding: 10px;
-    border-radius: 12px;
+    padding: 8px;
+    border-radius: 10px;
     transition: all 0.2s ease;
     opacity: 0;
     transform: translateX(10px);
@@ -144,4 +178,47 @@
 .deleteBtn:hover {
     background-color: #fecaca;
     transform: scale(1.1);
+}
+
+.completed .title {
+    color: var(--text-soft);
+    text-decoration: line-through;
+}
+
+.subtaskList {
+    width: 100%;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #f3f4f6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-left: 44px;
+}
+
+.subtask {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: #1c1c1e;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.subtask:hover {
+    color: var(--primary);
+}
+
+.subtaskDone {
+    color: #8e8e93;
+    text-decoration: line-through;
+}
+
+.subtaskCheck {
+    color: var(--success);
+}
+
+.subtaskCircle {
+    color: #d1d1d6;
 }

@@ -21,4 +21,15 @@ contextBridge.exposeInMainWorld('ipcRenderer', {
 
   // You can expose other APTs you need here.
   // ...
+  store: {
+    get(key: string) {
+      return ipcRenderer.sendSync('electron-store-get', key)
+    },
+    set(key: string, value: any) {
+      ipcRenderer.send('electron-store-set', key, value)
+    },
+    delete(key: string) {
+      ipcRenderer.send('electron-store-delete', key)
+    },
+  },
 })
