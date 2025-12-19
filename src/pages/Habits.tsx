@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Plus, X, Flame, Target, CheckCircle2 } from 'lucide-react';
+import { Plus, X, Flame, Target, CheckCircle2, Rocket } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import HabitItem from '../components/HabitItem';
+import EmptyState from '../components/EmptyState';
+import ConfirmModal from '../components/ConfirmModal';
 import styles from './Habits.module.css';
 import { formatLocalDate } from '../utils/dateUtils';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -56,6 +58,9 @@ const Habits: React.FC = () => {
     const [habitTitle, setHabitTitle] = useState('');
     const [habitGoal, setHabitGoal] = useState(1);
 
+    // Delete Confirmation State
+    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
     // Summary Stats
     const totalHabits = habits.length;
     const completedToday = habits.filter(h => h.progress >= h.goal).length;
@@ -97,7 +102,14 @@ const Habits: React.FC = () => {
     };
 
     const handleDeleteClick = (id: string) => {
-        setHabits(habits.filter(h => h.id !== id));
+        setConfirmDeleteId(id);
+    };
+
+    const confirmDelete = () => {
+        if (confirmDeleteId) {
+            setHabits(habits.filter(h => h.id !== confirmDeleteId));
+            setConfirmDeleteId(null);
+        }
     };
 
     const handleSave = () => {
@@ -173,16 +185,29 @@ const Habits: React.FC = () => {
 
             <div className={styles.list}>
                 <AnimatePresence mode="popLayout">
-                    {habits.map(habit => (
-                        <HabitItem
-                            key={habit.id}
-                            habit={habit}
-                            onIncrement={handleIncrement}
-                            onClick={(h) => navigate(`/habits/${h.id}`, { state: h })}
-                            onEdit={handleEditClick}
-                            onDelete={handleDeleteClick}
+                    {habits.length > 0 ? (
+                        habits.map(habit => (
+                            <HabitItem
+                                key={habit.id}
+                                habit={habit}
+                                onIncrement={handleIncrement}
+                                onClick={(h) => navigate(`/habits/${h.id}`, { state: h })}
+                                onEdit={handleEditClick}
+                                onDelete={handleDeleteClick}
+                            />
+                        ))
+                    ) : (
+                        <EmptyState
+                            icon={Rocket}
+                            title="Start a new routine"
+                            description="Consistency is key. Track your daily habits and build the life you want."
+                            action={{
+                                label: "New Habit",
+                                onClick: handleAddClick,
+                                icon: Plus
+                            }}
                         />
-                    ))}
+                    )}
                 </AnimatePresence>
             </div>
 
@@ -238,6 +263,15 @@ const Habits: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ConfirmModal
+                isOpen={!!confirmDeleteId}
+                onClose={() => setConfirmDeleteId(null)}
+                onConfirm={confirmDelete}
+                title="Delete Habit"
+                message="Are you sure you want to delete this habit? Your progress and streak will be permanently removed."
+                confirmText="Delete Habit"
+                variant="danger"
+            />
         </div>
     );
 };

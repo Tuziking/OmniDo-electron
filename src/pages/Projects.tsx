@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProjectCard from '../components/ProjectCard';
-import { Plus, X } from 'lucide-react';
+import EmptyState from '../components/EmptyState';
+import ConfirmModal from '../components/ConfirmModal';
+import { Plus, X, FolderPlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Projects.module.css';
 import { useLocalStorage } from '../hooks/useLocalStorage';
@@ -29,6 +31,9 @@ const Projects: React.FC = () => {
     const [projectTitle, setProjectTitle] = useState('');
     const [projectColor, setProjectColor] = useState('#FF6B6B');
 
+    // Delete Confirmation State
+    const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+
     const colors = ['#FF6B6B', '#4ECDC4', '#FFE66D', '#1A535C', '#FF9F1C', '#2EC4B6', '#E71D36', '#7209B7'];
 
     const handleAddClick = () => {
@@ -46,8 +51,13 @@ const Projects: React.FC = () => {
     };
 
     const handleDeleteClick = (id: string) => {
-        if (window.confirm('Are you sure you want to delete this project?')) {
-            setProjects(projects.filter(p => p.id !== id));
+        setConfirmDeleteId(id);
+    };
+
+    const confirmDelete = () => {
+        if (confirmDeleteId) {
+            setProjects(projects.filter(p => p.id !== confirmDeleteId));
+            setConfirmDeleteId(null);
         }
     };
 
@@ -99,19 +109,34 @@ const Projects: React.FC = () => {
                 }}
             >
                 <AnimatePresence mode="popLayout">
-                    {projects.map(project => (
-                        <motion.div
-                            key={project.id}
-                            layout
-                            onClick={() => navigate(`/projects/${project.id}`)}
-                        >
-                            <ProjectCard
-                                project={project}
-                                onEdit={handleEditClick}
-                                onDelete={handleDeleteClick}
+                    {projects.length > 0 ? (
+                        projects.map(project => (
+                            <motion.div
+                                key={project.id}
+                                layout
+                                onClick={() => navigate(`/projects/${project.id}`)}
+                            >
+                                <ProjectCard
+                                    project={project}
+                                    onEdit={handleEditClick}
+                                    onDelete={handleDeleteClick}
+                                />
+                            </motion.div>
+                        ))
+                    ) : (
+                        <div style={{ gridColumn: '1 / -1' }}>
+                            <EmptyState
+                                icon={FolderPlus}
+                                title="No projects yet"
+                                description="Organize your tasks into projects to keep everything tidy and focused."
+                                action={{
+                                    label: "Create First Project",
+                                    onClick: handleAddClick,
+                                    icon: Plus
+                                }}
                             />
-                        </motion.div>
-                    ))}
+                        </div>
+                    )}
                 </AnimatePresence>
             </motion.div>
 
@@ -173,6 +198,15 @@ const Projects: React.FC = () => {
                     </motion.div>
                 )}
             </AnimatePresence>
+            <ConfirmModal
+                isOpen={!!confirmDeleteId}
+                onClose={() => setConfirmDeleteId(null)}
+                onConfirm={confirmDelete}
+                title="Delete Project"
+                message="Are you sure you want to delete this project? This action cannot be undone and all tasks inside will be lost."
+                confirmText="Delete Project"
+                variant="danger"
+            />
         </div>
     );
 };
