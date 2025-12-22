@@ -114,6 +114,12 @@
     border: 1px solid rgba(250, 173, 20, 0.1);
 }
 
+.low {
+    background: #e6f7ff;
+    color: #1890ff;
+    border: 1px solid rgba(24, 144, 255, 0.1);
+}
+
 .deadline {
     display: flex;
     align-items: center;

@@ -1,7 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { format, addDays, startOfDay, isSameDay, eachDayOfInterval, isToday, isPast, isTomorrow, subDays, formatDistanceToNowStrict } from 'date-fns';
-import { Plus, Clock, Trash2, CheckCircle, Circle, Eye, EyeOff } from 'lucide-react';
+import { format, addDays, startOfDay, isSameDay, eachDayOfInterval, isToday, isPast, isTomorrow, subDays } from 'date-fns';
+import { Plus, Trash2, CheckCircle, Circle, Eye, EyeOff } from 'lucide-react';
 import styles from './TimelineView.module.css';
+import TaskDeadline from './TaskDeadline';
 
 import { Task } from '../types/task';
 
@@ -20,8 +21,19 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
 
     // Determine date range
     const today = startOfDay(currentDate);
+
+    // Find the furthest task date
+    const lastTaskDate = tasks.reduce((furthest, task) => {
+        if (!task.date) return furthest;
+        const taskDate = new Date(task.date);
+        return taskDate > furthest ? taskDate : furthest;
+    }, today);
+
+    // Default to at least 30 days, or extend to cover the last task
+    const minEndDate = addDays(today, 30);
+    const endDate = lastTaskDate > minEndDate ? lastTaskDate : minEndDate;
+
     const startDate = showPast ? subDays(today, 7) : today;
-    const endDate = addDays(today, 14);
     const days = eachDayOfInterval({ start: startDate, end: endDate });
 
     console.log('TimelineView Debug:', {
@@ -105,9 +117,7 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
                                                     <div className={styles.taskMeta}>
                                                         {task.date && (
                                                             <span className={`${styles.taskDDL} ${isPast(new Date(task.date)) && !task.completed ? styles.overdue : ''}`}>
-                                                                <Clock size={14} />
-                                                                {isPast(new Date(task.date)) && !task.completed ? 'Overdue by ' : 'Due in '}
-                                                                {formatDistanceToNowStrict(new Date(task.date))}
+                                                                <TaskDeadline date={task.date} completed={task.completed} />
                                                             </span>
                                                         )}
                                                     </div>

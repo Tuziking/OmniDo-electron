@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { formatDistanceToNowStrict, isPast } from 'date-fns';
+import { isPast } from 'date-fns';
 import styles from './TaskItem.module.css';
 import { Task } from '../types/task';
-import { Trash2, Clock, AlertCircle, ChevronDown, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
+import { Trash2, AlertCircle, ChevronDown, ChevronRight, CheckCircle2, Circle } from 'lucide-react';
+import TaskDeadline from './TaskDeadline';
 
 interface TaskItemProps {
     task: Task;
@@ -57,18 +58,22 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onClick, 
                     <div className={styles.content}>
                         <div className={styles.titleRow}>
                             <span className={styles.title}>{task.title}</span>
-                            {task.priority && task.priority > 1 && (
-                                <div className={`${styles.priorityTag} ${task.priority === 3 ? styles.high : styles.medium}`}>
+                            {task.priority && task.priority >= 1 && (
+                                <div className={`${styles.priorityTag} ${task.priority === 3 ? styles.high :
+                                    task.priority === 2 ? styles.medium : styles.low
+                                    }`}>
                                     <AlertCircle size={10} />
-                                    <span>{task.priority === 3 ? 'High' : 'Medium'}</span>
+                                    <span>{
+                                        task.priority === 3 ? 'High' :
+                                            task.priority === 2 ? 'Medium' : 'Low'
+                                    }</span>
                                 </div>
                             )}
                         </div>
                         <div className={styles.meta}>
                             {task.date && (
                                 <div className={`${styles.deadline} ${isPast(task.date) && !task.completed ? styles.overdue : ''}`}>
-                                    <Clock size={12} />
-                                    <span>{formatDistanceToNowStrict(task.date, { addSuffix: true })}</span>
+                                    <TaskDeadline date={task.date} completed={task.completed} />
                                 </div>
                             )}
                             {hasSubtasks && (

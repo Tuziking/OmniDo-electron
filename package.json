@@ -1,7 +1,7 @@
 {
   "name": "omnido",
   "private": true,
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A professional, minimal productivity workspace for macOS.",
   "author": "Tuziking",
   "type": "module",
