@@ -1,9 +1,15 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Target, CheckSquare, Folder, Activity, Lightbulb } from 'lucide-react';
+import { Target, CheckSquare, Folder, Activity, Lightbulb, Monitor } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
 const Sidebar: React.FC = () => {
+    const toggleWidget = () => {
+        if (window.ipcRenderer) {
+            window.ipcRenderer.send('toggle-widget');
+        }
+    };
+
     return (
         <div className={`${styles.sidebar} drag-region`}>
             <div className={styles.logo}>
@@ -31,6 +37,13 @@ const Sidebar: React.FC = () => {
                     <span>Inspiration</span>
                 </NavLink>
             </nav>
+
+            <div className={styles.bottomActions}>
+                <button className={styles.link} onClick={toggleWidget} title="Toggle Desktop Widget">
+                    <Monitor size={24} strokeWidth={1.5} />
+                    <span>Widget</span>
+                </button>
+            </div>
         </div>
     );
 };

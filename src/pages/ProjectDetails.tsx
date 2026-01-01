@@ -25,12 +25,7 @@ const ProjectDetails: React.FC = () => {
     ];
     const project = projects.find(p => p.id === id) || { title: 'Project Details' };
 
-    const [tasks, setTasks] = useStorage<Task[]>(`omnido_project_tasks_${id || 'default'}`, [
-        { id: '1', title: 'Research competitors', status: 'todo', completed: false, subtasks: [] },
-        { id: '2', title: 'Draft initial sketch', status: 'todo', completed: false, subtasks: [] },
-        { id: '3', title: 'Design high-fidelity mockups', status: 'in-progress', completed: false, subtasks: [] },
-        { id: '4', title: 'Project kickoff', status: 'done', completed: true, subtasks: [] },
-    ]);
+    const [tasks, setTasks] = useStorage<Task[]>(`omnido_project_tasks_${id || 'default'}`, []);
 
     const [activeTask, setActiveTask] = useState<Task | null>(null);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -151,7 +146,9 @@ const ProjectDetails: React.FC = () => {
 
     const handleUpdateTask = (updatedTask: Task) => {
         setTasks(tasks.map(t => t.id === updatedTask.id ? updatedTask : t));
-        setSelectedTask(updatedTask);
+        if (selectedTask && selectedTask.id === updatedTask.id) {
+            setSelectedTask(updatedTask);
+        }
     };
 
     const handleDeleteTask = (taskId: string) => {
@@ -201,6 +198,7 @@ const ProjectDetails: React.FC = () => {
                                 tasks={tasks.filter(t => t.status === col.id)}
                                 onTaskClick={setSelectedTask}
                                 onAddTask={handleAddTask}
+                                onUpdateTask={handleUpdateTask}
                             />
                         ))}
                     </div>

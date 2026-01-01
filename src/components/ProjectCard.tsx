@@ -6,17 +6,18 @@ import styles from './ProjectCard.module.css';
 interface Project {
     id: string;
     title: string;
-    taskCount: number;
     color: string;
 }
 
 interface ProjectCardProps {
     project: Project;
+    totalTasks: number;
+    completedTasks: number;
     onEdit: (project: Project) => void;
     onDelete: (id: string) => void;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEdit, onDelete }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ project, totalTasks, completedTasks, onEdit, onDelete }) => {
     const [showMenu, setShowMenu] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
 
@@ -95,13 +96,13 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onEdit, onDelete }) 
                 <h3 className={styles.title}>{project.title}</h3>
                 <div className={styles.progressSection}>
                     <div className={styles.progressInfo}>
-                        <span className={styles.count}>{project.taskCount} tasks</span>
-                        <span className={styles.percent}>75%</span>
+                        <span className={styles.count}>{totalTasks} tasks</span>
+                        <span className={styles.percent}>{totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0}%</span>
                     </div>
                     <div className={styles.progressBar}>
                         <motion.div
                             initial={{ width: 0 }}
-                            animate={{ width: '75%' }}
+                            animate={{ width: `${totalTasks > 0 ? (completedTasks / totalTasks) * 100 : 0}%` }}
                             transition={{ duration: 1, ease: "easeOut" }}
                             className={styles.progressFill}
                             style={{ backgroundColor: project.color }}

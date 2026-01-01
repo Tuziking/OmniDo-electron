@@ -3,6 +3,7 @@ import { X, Plus, Trash2, CheckSquare, Square, Calendar, AlertCircle } from 'luc
 import { format } from 'date-fns';
 import DateTimePicker from './DateTimePicker';
 import styles from './Kanban.module.css';
+import { formatLocalTime } from '../utils/dateUtils';
 
 import { Task, TaskPriority } from '../types/task';
 
@@ -17,9 +18,10 @@ interface SubtaskListProps {
     tasks: Task[];
     onUpdateSubtask: (subtaskId: string, updates: Partial<Task>) => void;
     onDeleteSubtask: (subtaskId: string) => void;
+    onEnterPressed: () => void;
 }
 
-const SubtaskList: React.FC<SubtaskListProps> = ({ tasks, onUpdateSubtask, onDeleteSubtask }) => {
+const SubtaskList: React.FC<SubtaskListProps> = ({ tasks, onUpdateSubtask, onDeleteSubtask, onEnterPressed }) => {
     return (
         <div className={styles.subtaskList}>
             {tasks.map(subtask => (
@@ -34,6 +36,12 @@ const SubtaskList: React.FC<SubtaskListProps> = ({ tasks, onUpdateSubtask, onDel
                         className={styles.subtaskInput}
                         value={subtask.title}
                         onChange={(e) => onUpdateSubtask(subtask.id, { title: e.target.value })}
+                        onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                                e.preventDefault();
+                                onEnterPressed();
+                            }
+                        }}
                         style={{ textDecoration: subtask.status === 'done' ? 'line-through' : 'none', color: subtask.status === 'done' ? '#9ca3af' : 'inherit' }}
                         placeholder="New subtask..."
                         autoFocus
@@ -140,7 +148,11 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpda
                             <DateTimePicker
                                 initialDate={task.date ? new Date(task.date) : new Date()}
                                 onSave={(date) => {
-                                    onUpdate({ ...task, date: date });
+                                    onUpdate({
+                                        ...task,
+                                        date: date,
+                                        startTime: formatLocalTime(date)
+                                    });
                                     setShowDatePicker(false);
                                 }}
                                 onCancel={() => setShowDatePicker(false)}
@@ -154,6 +166,7 @@ const TaskDetailModal: React.FC<TaskDetailModalProps> = ({ task, onClose, onUpda
                             tasks={task.subtasks || []}
                             onUpdateSubtask={handleUpdateSubtask}
                             onDeleteSubtask={handleDeleteSubtask}
+                            onEnterPressed={handleAddSubtask}
                         />
                         <button className={styles.addSubtaskBtn} onClick={handleAddSubtask}>
                             <Plus size={16} /> Add Subtask

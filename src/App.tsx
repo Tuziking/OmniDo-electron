@@ -9,6 +9,7 @@ import InspirationEditor from './pages/InspirationEditor';
 
 import ProjectDetails from './pages/ProjectDetails';
 import HabitDetails from './pages/HabitDetails';
+import DesktopWidget from './components/DesktopWidget';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="habits/:id" element={<HabitDetails />} />
           <Route path="inspiration" element={<Inspiration />} />
         </Route>
+        <Route path="/widget" element={<DesktopWidget />} />
         <Route path="/inspiration/new" element={<InspirationEditor />} />
         <Route path="/inspiration/edit/:id" element={<InspirationEditor />} />
       </Routes>

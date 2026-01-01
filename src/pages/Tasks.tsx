@@ -9,6 +9,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Tasks.module.css';
 import { useStorage } from '../hooks/useStorage';
 import { Task, TaskPriority } from '../types/task';
+import { formatLocalTime } from '../utils/dateUtils';
 
 const DEFAULT_TASKS: Task[] = [
     {
@@ -64,15 +65,12 @@ const Tasks: React.FC = () => {
     const handleAddTask = (selectedDate: Date) => {
         if (!newTaskTitle.trim()) return;
 
-        const hours = selectedDate.getHours().toString().padStart(2, '0');
-        const minutes = selectedDate.getMinutes().toString().padStart(2, '0');
-
         const newTask: Task = {
             id: Date.now().toString(),
             title: newTaskTitle,
             completed: false,
             date: selectedDate,
-            startTime: `${hours}:${minutes}`,
+            startTime: formatLocalTime(selectedDate),
             duration: 60, // Default duration
             priority: newTaskPriority
         };

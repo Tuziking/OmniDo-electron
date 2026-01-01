@@ -4,11 +4,12 @@ import { CSS } from '@dnd-kit/utilities';
 import { CheckSquare, List } from 'lucide-react';
 import styles from './Kanban.module.css';
 
-import { Task } from '../types/task';
+import { Task, TaskStatus } from '../types/task';
 
 interface KanbanCardProps {
     task: Task;
     onClick: (task: Task) => void;
+    onUpdate?: (task: Task) => void;
 }
 
 const COLORS = {
@@ -17,7 +18,7 @@ const COLORS = {
     'done': { border: '#10b981', bg: '#ecfdf5', text: '#047857' } // Emerald
 };
 
-const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
+const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick, onUpdate }) => {
     const {
         attributes,
         listeners,
@@ -47,20 +48,55 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
         setIsExpanded(!isExpanded);
     };
 
+    const handleSubtaskToggle = (e: React.MouseEvent, subtaskId: string) => {
+        e.stopPropagation();
+        e.preventDefault();
+        if (!onUpdate) return;
+
+        const updatedSubtasks = (task.subtasks || []).map(sub => {
+            if (sub.id === subtaskId) {
+                const newStatus: TaskStatus = sub.status === 'done' ? 'todo' : 'done';
+                return { ...sub, status: newStatus, completed: newStatus === 'done' };
+            }
+            return sub;
+        });
+
+        onUpdate({ ...task, subtasks: updatedSubtasks });
+    };
+
+    const handleCardClick = (e: React.MouseEvent) => {
+        const target = e.target as HTMLElement;
+
+        // If click is on interactive elements (subtasks, badges) or their children, don't trigger card click
+        // Using data attributes for reliable detection since CSS module class names are hashed
+        if (target.closest('[data-subtask-container]') || target.closest('[data-subtask-item]') || target.closest('[data-subtask-badge]')) {
+            return;
+        }
+        onClick(task);
+    };
+
     return (
         <div
             ref={setNodeRef}
             style={style}
-            {...listeners}
             {...attributes}
             className={`${styles.card} ${isDragging ? styles.dragging : ''}`}
-            onClick={() => onClick(task)}
         >
-            <div className={styles.cardTitle}>{task.title}</div>
+            <div
+                className={styles.cardTitle}
+                {...listeners}
+                onClick={handleCardClick}
+            >
+                {task.title}
+            </div>
 
-            <div className={styles.cardFooter}>
+            <div
+                className={styles.cardFooter}
+                {...listeners}
+            >
                 <div
                     className={styles.subtaskBadge}
+                    data-subtask-badge
                     onClick={task.subtasks && task.subtasks.length > 0 ? handleToggleSubtasks : undefined}
                 >
                     {task.subtasks && task.subtasks.length > 0 ? (
@@ -74,22 +110,36 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ task, onClick }) => {
                 </div>
             </div>
 
-            {
-                isExpanded && task.subtasks && task.subtasks.length > 0 && (
-                    <div className={styles.subtaskListDropdown} onClick={(e) => e.stopPropagation()}>
-                        {task.subtasks.map(sub => (
-                            <div
-                                key={sub.id}
-                                className={`${styles.subtaskCardItem} ${sub.status === 'done' ? styles.done : ''}`}
-                            >
-                                <div className={`${styles.subtaskDot} ${sub.status === 'done' ? styles.done : ''}`}></div>
-                                <span>{sub.title || 'Untitled'}</span>
-                            </div>
-                        ))}
-                    </div>
-                )
-            }
-        </div >
+            {task.subtasks && task.subtasks.length > 0 && isExpanded && (
+                <div
+                    className={styles.subtaskListDropdown}
+                    data-subtask-container
+                    onClick={(e) => { e.stopPropagation(); e.preventDefault(); }}
+                    onMouseDown={(e) => { e.stopPropagation(); }}
+                    onPointerDown={(e) => { e.stopPropagation(); }}
+                    onTouchStart={(e) => { e.stopPropagation(); }}
+                >
+                    {task.subtasks.map(sub => (
+                        <div
+                            key={sub.id}
+                            data-subtask-item
+                            className={`${styles.subtaskCardItem} ${sub.status === 'done' ? styles.done : ''}`}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                e.preventDefault();
+                                handleSubtaskToggle(e, sub.id);
+                            }}
+                            onMouseDown={(e) => { e.stopPropagation(); }}
+                            onPointerDown={(e) => { e.stopPropagation(); }}
+                            style={{ cursor: 'pointer' }}
+                        >
+                            <div className={`${styles.subtaskDot} ${sub.status === 'done' ? styles.done : ''}`}></div>
+                            <span>{sub.title || 'Untitled'}</span>
+                        </div>
+                    ))}
+                </div>
+            )}
+        </div>
     );
 };
 

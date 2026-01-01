@@ -13,6 +13,7 @@ interface KanbanColumnProps {
     tasks: Task[];
     onTaskClick: (task: Task) => void;
     onAddTask: (status: TaskStatus) => void;
+    onUpdateTask: (updatedTask: Task) => void;
 }
 
 const COLORS = {
@@ -21,7 +22,7 @@ const COLORS = {
     'done': { border: '#10b981', bg: '#ecfdf5', text: '#047857' } // Emerald
 };
 
-const KanbanColumn: React.FC<KanbanColumnProps> = ({ id, title, tasks, onTaskClick, onAddTask }) => {
+const KanbanColumn: React.FC<KanbanColumnProps> = ({ id, title, tasks, onTaskClick, onAddTask, onUpdateTask }) => {
     const { setNodeRef, isOver } = useDroppable({
         id: id
     });
@@ -62,6 +63,7 @@ const KanbanColumn: React.FC<KanbanColumnProps> = ({ id, title, tasks, onTaskCli
                             key={task.id}
                             task={task}
                             onClick={onTaskClick}
+                            onUpdate={onUpdateTask}
                         />
                     ))}
                 </SortableContext>

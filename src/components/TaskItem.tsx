@@ -14,7 +14,7 @@ interface TaskItemProps {
     onUpdate?: (task: Task) => void;
 }
 
-const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onClick, onUpdate }) => {
+const TaskItem = React.forwardRef<HTMLDivElement, TaskItemProps>(({ task, onToggle, onDelete, onClick, onUpdate }, ref) => {
     const [isExpanded, setIsExpanded] = useState(false);
 
     const subtasks = task.subtasks || [];
@@ -33,6 +33,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onClick, 
 
     return (
         <motion.div
+            ref={ref}
             layout
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -127,6 +128,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task, onToggle, onDelete, onClick, 
             )}
         </motion.div>
     );
-};
+});
 
 export default TaskItem;

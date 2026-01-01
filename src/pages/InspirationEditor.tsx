@@ -6,17 +6,8 @@ import MDEditor, { commands } from '@uiw/react-md-editor';
 import { Excalidraw } from "@excalidraw/excalidraw";
 import styles from './InspirationEditor.module.css';
 
-type InspirationType = 'text' | 'image' | 'quote' | 'drawing';
-
-interface InspirationItem {
-    id: string;
-    type: InspirationType;
-    title: string;
-    content: string;
-    author?: string;
-    color?: string;
-    coverImage?: string; // base64 encoded image
-}
+import { useStorage } from '../hooks/useStorage';
+import { InspirationType, InspirationItem, INSPIRATION_STORAGE_KEY, DEFAULT_INSPIRATION_ITEMS } from '../types/inspiration';
 
 const InspirationEditor: React.FC = () => {
     const { id } = useParams<{ id: string }>();
@@ -32,11 +23,10 @@ const InspirationEditor: React.FC = () => {
     const [isLoaded, setIsLoaded] = useState(false);
     const [excalidrawAPI, setExcalidrawAPI] = useState<any>(null);
 
+    const [items, setItems] = useStorage<InspirationItem[]>(INSPIRATION_STORAGE_KEY, DEFAULT_INSPIRATION_ITEMS);
+
     // Initial Load
     useEffect(() => {
-        const saved = localStorage.getItem('omnido_inspiration');
-        const items: InspirationItem[] = saved ? JSON.parse(saved) : [];
-
         if (id && id !== 'new') {
             const item = items.find(i => i.id === id);
             if (item) {
@@ -58,7 +48,7 @@ const InspirationEditor: React.FC = () => {
             }
         }
         setIsLoaded(true);
-    }, [id]);
+    }, [id, items]);
 
     // Handle cover image upload
     const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,9 +69,6 @@ const InspirationEditor: React.FC = () => {
     };
 
     const handleSave = useCallback(() => {
-        const saved = localStorage.getItem('omnido_inspiration');
-        let items: InspirationItem[] = saved ? JSON.parse(saved) : [];
-
         let finalContent = content;
         let finalCoverImage = coverImage;
 
@@ -121,14 +108,13 @@ const InspirationEditor: React.FC = () => {
         };
 
         if (id && id !== 'new') {
-            items = items.map(i => i.id === id ? { ...i, ...newItem } : i);
+            setItems(items.map(i => i.id === id ? { ...i, ...newItem } : i));
         } else {
-            items = [newItem, ...items];
+            setItems([newItem, ...items]);
         }
 
-        localStorage.setItem('omnido_inspiration', JSON.stringify(items));
         navigate('/inspiration');
-    }, [id, type, title, content, color, coverImage, excalidrawAPI, navigate]);
+    }, [id, type, title, content, color, coverImage, excalidrawAPI, navigate, items, setItems]);
 
     if (!isLoaded) return <div>Loading...</div>;
 

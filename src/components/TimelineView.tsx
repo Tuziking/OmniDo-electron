@@ -5,6 +5,7 @@ import styles from './TimelineView.module.css';
 import TaskDeadline from './TaskDeadline';
 
 import { Task } from '../types/task';
+import { formatLocalTime } from '../utils/dateUtils';
 
 interface TimelineViewProps {
     tasks: Task[];
@@ -72,7 +73,8 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
                         .sort((a, b) => {
                             // Sort by completion status first (uncompleted first)
                             if (a.completed !== b.completed) return a.completed ? 1 : -1;
-                            // Then by start time if available
+                            // Then by start time/date if available
+                            if (a.date && b.date) return new Date(a.date).getTime() - new Date(b.date).getTime();
                             if (a.startTime && b.startTime) return a.startTime.localeCompare(b.startTime);
                             return 0;
                         });
@@ -98,7 +100,9 @@ const TimelineView: React.FC<TimelineViewProps> = ({ tasks, currentDate, onAddTa
                                 <div className={styles.tasksContainer}>
                                     {dayTasks.map(task => (
                                         <div key={task.id} className={styles.taskWrapper}>
-                                            <span className={styles.taskTime}>{task.startTime || 'All Day'}</span>
+                                            <span className={styles.taskTime}>
+                                                {task.date ? formatLocalTime(new Date(task.date)) : (task.startTime || 'All Day')}
+                                            </span>
 
                                             <div
                                                 className={`${styles.taskItem} ${task.completed ? styles.completed : ''}`}

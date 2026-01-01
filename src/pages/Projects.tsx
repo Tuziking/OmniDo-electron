@@ -8,18 +8,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import styles from './Projects.module.css';
 import { useStorage } from '../hooks/useStorage';
 
+import { Task } from '../types/task';
+
 interface Project {
     id: string;
     title: string;
-    taskCount: number;
     color: string;
 }
 
 const DEFAULT_PROJECTS: Project[] = [
-    { id: '1', title: 'Personal', taskCount: 5, color: '#FF6B6B' },
-    { id: '2', title: 'Work', taskCount: 12, color: '#4ECDC4' },
-    { id: '3', title: 'Learning', taskCount: 3, color: '#FFE66D' },
-    { id: '4', title: 'Fitness', taskCount: 2, color: '#1A535C' },
+    { id: '1', title: 'Personal', color: '#FF6B6B' },
+    { id: '2', title: 'Work', color: '#4ECDC4' },
+    { id: '3', title: 'Learning', color: '#FFE66D' },
+    { id: '4', title: 'Fitness', color: '#1A535C' },
 ];
 
 const Projects: React.FC = () => {
@@ -74,12 +75,26 @@ const Projects: React.FC = () => {
             const newProject: Project = {
                 id: Date.now().toString(),
                 title: projectTitle,
-                taskCount: 0,
                 color: projectColor
             };
             setProjects([...projects, newProject]);
         }
         setIsModalOpen(false);
+    };
+
+    const getProjectStats = (projectId: string) => {
+        // We need to read from the same storage key used in ProjectDetails
+        // But useStorage is a hook, so we'll use a direct store access or a helper if available
+        // Since we are in a functional component, we can't call hooks conditionally or inside loops
+        // However, ProjectDetails uses omnido_project_tasks_${id}
+        // Let's assume we can access window.ipcRenderer.store directly if it exists
+        if (window.ipcRenderer && window.ipcRenderer.store) {
+            const tasks = window.ipcRenderer.store.get(`omnido_project_tasks_${projectId}`) as Task[] || [];
+            const total = tasks.length;
+            const completed = tasks.filter(t => t.status === 'done' || t.completed).length;
+            return { total, completed };
+        }
+        return { total: 0, completed: 0 };
     };
 
     return (
@@ -110,19 +125,24 @@ const Projects: React.FC = () => {
             >
                 <AnimatePresence mode="popLayout">
                     {projects.length > 0 ? (
-                        projects.map(project => (
-                            <motion.div
-                                key={project.id}
-                                layout
-                                onClick={() => navigate(`/projects/${project.id}`)}
-                            >
-                                <ProjectCard
-                                    project={project}
-                                    onEdit={handleEditClick}
-                                    onDelete={handleDeleteClick}
-                                />
-                            </motion.div>
-                        ))
+                        projects.map(project => {
+                            const { total, completed } = getProjectStats(project.id);
+                            return (
+                                <motion.div
+                                    key={project.id}
+                                    layout
+                                    onClick={() => navigate(`/projects/${project.id}`)}
+                                >
+                                    <ProjectCard
+                                        project={project}
+                                        totalTasks={total}
+                                        completedTasks={completed}
+                                        onEdit={handleEditClick}
+                                        onDelete={handleDeleteClick}
+                                    />
+                                </motion.div>
+                            );
+                        })
                     ) : (
                         <div style={{ gridColumn: '1 / -1' }}>
                             <EmptyState
